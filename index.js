@@ -4,7 +4,9 @@ var n = 20, // number of layers
     m = 200, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
     layers0 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
-    layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
+    //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
+    //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
+    layers1 = stack(Array(probabilityOfCoverageTest(5, 10, m), probabilityOfCoverageTest(23, 30, m), probabilityOfCoverageTest(33, 40, m)));
 
 var width = 960,
     height = 500;
@@ -47,6 +49,41 @@ function transition() {
       .attr("d", area);
 }
 
+function normalDist(mean, stdDeviation, n){
+  var ans = [], i;
+  for (i = 0; i < n; ++i){
+      ans[i] = Math.exp(-1*(i-mean)*(i-mean)/(2*stdDeviation*stdDeviation)) / (stdDeviation*Math.sqrt(2*Math.PI));
+  }
+  return ans;
+}
+
+function normalDistCdr(mean, stdDeviation, n){
+  var ans = normalDist(mean, stdDeviation, n), i, sum = 0;
+  for (i = 0; i < n; ++i){
+      sum = ans[i] + sum;
+      ans[i] = sum;
+  }
+  return ans;
+}
+function normalDistTest(mean,stdDev,n){
+    var a = normalDist(mean, stdDev, n);
+  return a.map(function(d, i) { return {x: i, y: 1000* Math.max(0, d)}; });
+ 
+}
+function probabilityOfCoverageTest(camMin,camMax,n){
+    var a = probabilityOfCoverage(camMin,camMax,1,n);
+  return a.map(function(d, i) { return {x: i, y: 100* Math.max(0, d)}; });
+ 
+}
+
+function probabilityOfCoverage(camMin, camMax, crackSD, n){
+    var lowerHalf;
+    var upperHalf;
+    var halfWayIndex = Math.ceil((camMax + camMin)/2);
+    lowerHalf = normalDistCdr(camMin, crackSD, halfWayIndex );
+    upperHalf = normalDistCdr(n - camMax, crackSD, n - halfWayIndex);
+    return lowerHalf.concat(upperHalf.reverse());
+}
 // Inspired by Lee Byron's test data generator.
 function bumpLayer(n) {
 
