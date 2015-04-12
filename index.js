@@ -7,6 +7,7 @@
 var n = 20, // number of layers
     m = 100, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
+    //stack = d3.layout.stack().offset("wiggle"),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
     //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
@@ -50,6 +51,12 @@ svg.selectAll("path")
   .enter().append("path")
     .attr("d", area)
     .style("fill", function() { return color(Math.random()); });
+
+svg.append("text")
+    .attr("text-anchor", "middle")
+    .attr("x", width/2)
+    .attr("y", height - 5)
+    .text("Centimeters");
 
 function transition() {
   d3.selectAll("path")
