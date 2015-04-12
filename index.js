@@ -1,9 +1,8 @@
 //todo: colors?
 //mouseover what piece it is?
 //add peanuts
-//whats up with that white spot?
-//clarify labeling
-
+//thick boarder around the different "sets" of things.
+//more robust math (including head width)
 var n = 20, // number of layers
     m = 100, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
@@ -100,7 +99,7 @@ function probabilityOfCoverageTest(camMin,camMax,n){
 function getHarrisonsRack(n, nutsFirst){
     var SD = 2;
     if (nutsFirst){
-	return Array(coverage(0,100,100000,n)).concat(getWallnuts(SD,n), getCamalotDoubles(SD,n));
+	return Array(coverage(100,100,100000,n)).concat(getWallnuts(SD,n), getCamalotDoubles(SD,n));
     }else{
 	return Array(coverage(0,100,100000,n)).concat(getCamalotDoubles(SD,n), getWallnuts(SD,n));
     }
