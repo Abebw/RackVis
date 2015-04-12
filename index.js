@@ -7,10 +7,10 @@
 var n = 20, // number of layers
     m = 100, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
-    layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
+    //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
     //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
-    //layers0 = stack(Array(probabilityOfCoverageTest(5, 10, m), probabilityOfCoverageTest(23, 30, m), probabilityOfCoverageTest(33, 40, m)));
+    layers1 = stack(Array(probabilityOfCoverageTest(15, 30, m), probabilityOfCoverageTest(23, 50, m), probabilityOfCoverageTest(40, 80, m)));
     layers0 = stack(getHarrisonsRack(m));
 
 var width = 960,
@@ -85,14 +85,15 @@ function normalDistTest(mean,stdDev,n){
 }
 function probabilityOfCoverageTest(camMin,camMax,n){
     var a = probabilityOfCoverage(camMin,camMax,1,n);
-  return a.map(function(d, i) { return {x: i, y: 100* Math.max(0, d)}; });
+  return a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}; });
  
 }
 
 function getHarrisonsRack(n){
     var SD = 2;
     return Array(
-
+	//dummy zero entry
+	coverage(0,100,100000,n),
 	//wallnuts
 	coverage(6.7,14.3,SD,n),
 	coverage(8.1,15.8,SD,n),
