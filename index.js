@@ -1,7 +1,7 @@
 
 
 var n = 20, // number of layers
-    m = 200, // number of samples per layer
+    m = 100, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
     layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
@@ -10,15 +10,19 @@ var n = 20, // number of layers
 layers0 = stack(getHarrisonsRack(m));
 
 var width = 960,
-    height = 500;
+    height = 500,
+    scaleHeight = 50;
 
 var x = d3.scale.sqrt()
     .domain([0, m - 1])
     .range([0, width]);
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient('bottom');
 
 var y = d3.scale.linear()
     .domain([0, d3.max(layers0.concat(layers1), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
-    .range([height, 0]);
+    .range([height-scaleHeight, 0]);
 
 var color = d3.scale.linear()
     .range(["#aad", "#556"]);
@@ -31,6 +35,10 @@ var area = d3.svg.area()
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
+
+svg.append("g")
+    .attr("transform", "translate(0," + (height - scaleHeight) + ")")
+    .call(xAxis);
 
 svg.selectAll("path")
     .data(layers0)
