@@ -3,10 +3,11 @@
 var n = 20, // number of layers
     m = 200, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
-    layers0 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
+    layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
     //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
-    layers1 = stack(Array(probabilityOfCoverageTest(5, 10, m), probabilityOfCoverageTest(23, 30, m), probabilityOfCoverageTest(33, 40, m)));
+    //layers0 = stack(Array(probabilityOfCoverageTest(5, 10, m), probabilityOfCoverageTest(23, 30, m), probabilityOfCoverageTest(33, 40, m)));
+layers0 = stack(getHarrisonsRack(m));
 
 var width = 960,
     height = 500;
@@ -76,6 +77,40 @@ function probabilityOfCoverageTest(camMin,camMax,n){
  
 }
 
+function getHarrisonsRack(n){
+    var SD = 2;
+    return Array(//wallnuts
+	coverage(6.7,14.3,SD,n),
+	coverage(8.1,15.8,SD,n),
+	coverage(9.4,16.5,SD,n),
+	coverage(11.0,17.6,SD,n),
+	coverage(13.2,19.4,SD,n),
+	coverage(15.6,22.6,SD,n),
+	coverage(18.9,25.8,SD,n),
+	coverage(22.3,29.0,SD,n),
+	coverage(25.2,32.1,SD,n),
+	coverage(28.8,32.6,SD,n),
+	coverage(33.1,37.4,SD,n),
+    //camalots
+	coverage(13.0,23.4,SD,n),//0.3
+	coverage(13.0,23.4,SD,n),
+	coverage(15.5,26.7,SD,n),//0.4
+	coverage(15.5,26.7,SD,n),
+	coverage(19.6,33.5,SD,n),//0.5
+	coverage(19.6,33.5,SD,n),
+	coverage(23.9,41.2,SD,n),//0.75
+	coverage(23.9,41.2,SD,n),
+	coverage(30.2,41.2,SD,n),//1
+	coverage(30.2,41.2,SD,n),
+	coverage(37.2,64.9,SD,n),//2
+	coverage(37.2,64.9,SD,n),
+	coverage(50.7,87.9,SD,n),//3
+	coverage(50.7,87.9,SD,n));
+}
+function coverage(min,max,sd,n){
+    var a = probabilityOfCoverage(min,max,sd,n);
+  return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
+}
 function probabilityOfCoverage(camMin, camMax, crackSD, n){
     var lowerHalf;
     var upperHalf;
