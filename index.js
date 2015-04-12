@@ -12,7 +12,7 @@ layers0 = stack(getHarrisonsRack(m));
 var width = 960,
     height = 500;
 
-var x = d3.scale.linear()
+var x = d3.scale.sqrt()
     .domain([0, m - 1])
     .range([0, width]);
 
@@ -79,7 +79,24 @@ function probabilityOfCoverageTest(camMin,camMax,n){
 
 function getHarrisonsRack(n){
     var SD = 2;
-    return Array(//wallnuts
+    return Array(
+    //camalots
+	coverage(13.0,23.4,SD,n),//0.3
+	coverage(13.0,23.4,SD,n),
+	coverage(15.5,26.7,SD,n),//0.4
+	coverage(15.5,26.7,SD,n),
+	coverage(19.6,33.5,SD,n),//0.5
+	coverage(19.6,33.5,SD,n),
+	coverage(23.9,41.2,SD,n),//0.75
+	coverage(23.9,41.2,SD,n),
+	coverage(30.2,52.1,SD,n),//1
+	coverage(30.2,52.1,SD,n),
+	coverage(37.2,64.9,SD,n),//2
+	coverage(37.2,64.9,SD,n),
+	coverage(50.7,87.9,SD,n),//3
+	coverage(50.7,87.9,SD,n),
+
+	//wallnuts
 	coverage(6.7,14.3,SD,n),
 	coverage(8.1,15.8,SD,n),
 	coverage(9.4,16.5,SD,n),
@@ -90,22 +107,7 @@ function getHarrisonsRack(n){
 	coverage(22.3,29.0,SD,n),
 	coverage(25.2,32.1,SD,n),
 	coverage(28.8,32.6,SD,n),
-	coverage(33.1,37.4,SD,n),
-    //camalots
-	coverage(13.0,23.4,SD,n),//0.3
-	coverage(13.0,23.4,SD,n),
-	coverage(15.5,26.7,SD,n),//0.4
-	coverage(15.5,26.7,SD,n),
-	coverage(19.6,33.5,SD,n),//0.5
-	coverage(19.6,33.5,SD,n),
-	coverage(23.9,41.2,SD,n),//0.75
-	coverage(23.9,41.2,SD,n),
-	coverage(30.2,41.2,SD,n),//1
-	coverage(30.2,41.2,SD,n),
-	coverage(37.2,64.9,SD,n),//2
-	coverage(37.2,64.9,SD,n),
-	coverage(50.7,87.9,SD,n),//3
-	coverage(50.7,87.9,SD,n));
+	coverage(33.1,37.4,SD,n));
 }
 function coverage(min,max,sd,n){
     var a = probabilityOfCoverage(min,max,sd,n);
