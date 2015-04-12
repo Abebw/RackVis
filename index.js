@@ -10,8 +10,9 @@ var n = 20, // number of layers
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
     //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
-    layers1 = stack(Array(probabilityOfCoverageTest(15, 30, m), probabilityOfCoverageTest(23, 50, m), probabilityOfCoverageTest(40, 80, m)));
-    layers0 = stack(getHarrisonsRack(m));
+    //layers1 = stack(Array(probabilityOfCoverageTest(15, 30, m), probabilityOfCoverageTest(23, 50, m), probabilityOfCoverageTest(40, 80, m)));
+    layers0 = stack(getHarrisonsRack(m, true));
+    layers1 = stack(getHarrisonsRack(m, false));
 
 var width = 960,
     height = 500,
@@ -89,13 +90,18 @@ function probabilityOfCoverageTest(camMin,camMax,n){
  
 }
 
-function getHarrisonsRack(n){
+function getHarrisonsRack(n, nutsFirst){
     var SD = 2;
+    if (nutsFirst){
+	return Array(coverage(0,100,100000,n)).concat(getWallnuts(SD,n), getCamalotDoubles(SD,n));
+    }else{
+	return Array(coverage(0,100,100000,n)).concat(getCamalotDoubles(SD,n), getWallnuts(SD,n));
+    }
+
+}
+function getWallnuts(SD,n){
     return Array(
-	//dummy zero entry
-	coverage(0,100,100000,n),
-	//wallnuts
-	coverage(6.7,14.3,SD,n),
+ 	coverage(6.7,14.3,SD,n),
 	coverage(8.1,15.8,SD,n),
 	coverage(9.4,16.5,SD,n),
 	coverage(11.0,17.6,SD,n),
@@ -105,9 +111,11 @@ function getHarrisonsRack(n){
 	coverage(22.3,29.0,SD,n),
 	coverage(25.2,32.1,SD,n),
 	coverage(28.8,32.6,SD,n),
-	coverage(33.1,37.4,SD,n),
+	coverage(33.1,37.4,SD,n));
 
-    //camalots
+}
+function getCamalotDoubles(SD,n){
+    return Array(
 	coverage(13.0,23.4,SD,n),//0.3
 	coverage(13.0,23.4,SD,n),
 	coverage(15.5,26.7,SD,n),//0.4
@@ -122,6 +130,8 @@ function getHarrisonsRack(n){
 	coverage(37.2,64.9,SD,n),
 	coverage(50.7,87.9,SD,n),//3
 	coverage(50.7,87.9,SD,n));
+
+
 }
 function coverage(min,max,sd,n){
     var a = probabilityOfCoverage(min,max,sd,n);
