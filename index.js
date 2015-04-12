@@ -1,4 +1,8 @@
-
+//todo: colors?
+//mouseover what piece it is?
+//add peanuts
+//whats up with that white spot?
+//clarify labeling
 
 var n = 20, // number of layers
     m = 100, // number of samples per layer
@@ -7,14 +11,14 @@ var n = 20, // number of layers
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
     //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
     //layers0 = stack(Array(probabilityOfCoverageTest(5, 10, m), probabilityOfCoverageTest(23, 30, m), probabilityOfCoverageTest(33, 40, m)));
-layers0 = stack(getHarrisonsRack(m));
+    layers0 = stack(getHarrisonsRack(m));
 
 var width = 960,
     height = 500,
     scaleHeight = 50;
 
 var x = d3.scale.sqrt()
-    .domain([0, m - 1])
+    .domain([5, m - 1])
     .range([0, width]);
 var xAxis = d3.svg.axis()
     .scale(x)
