@@ -5,8 +5,9 @@
 //more robust math (including head width)
 var n = 20, // number of layers
     m = 100, // number of samples per layer
-    stack = d3.layout.stack().offset("zero"),
-    //stack = d3.layout.stack().offset("wiggle"),
+    //stack = d3.layout.stack().offset("zero"),
+    stack = d3.layout.stack().offset("wiggle"),
+    //stack = d3.layout.stack().offset("silhouette"),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
     //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
     //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
@@ -49,7 +50,7 @@ svg.selectAll("path")
     .data(layers0)
   .enter().append("path")
     .attr("d", area)
-    .style("fill", function() { return color(Math.random()); });
+    .style("fill", function(x) { return color(x[0].c); });
 
 svg.append("text")
     .attr("text-anchor", "middle")
@@ -141,7 +142,9 @@ function getCamalotDoubles(SD,n){
 }
 function coverage(min,max,sd,n){
     var a = probabilityOfCoverage(min,max,sd,n);
-  return a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}; });
+    ans = a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}});
+    ans[0].c = Math.random();
+  return ans;
 }
 function probabilityOfCoverage(camMin, camMax, crackSD, n){
     var lowerHalf;
