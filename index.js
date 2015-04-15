@@ -38,7 +38,7 @@ var area = d3.svg.area()
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -126,7 +126,7 @@ function getWallnuts(SD,n){
 }
 function getCamalotDoubles(SD,n){
     var c = d3.scale.linear()
-	.range(["#111", "#a11"]);
+	.range(["#522", "#a33"]);
     return Array(
 	coverage(13.0,23.4,SD,n,c),//0.3
 	coverage(13.0,23.4,SD,n,c),
