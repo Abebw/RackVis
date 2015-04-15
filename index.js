@@ -50,7 +50,7 @@ svg.selectAll("path")
     .data(layers0)
   .enter().append("path")
     .attr("d", area)
-    .style("fill", function(x) { return color(x[0].c); });
+    .style("fill", function(x) { return x[0].c; });
 
 svg.append("text")
     .attr("text-anchor", "middle")
@@ -67,7 +67,8 @@ function transition() {
       })
     .transition()
       .duration(2500)
-      .attr("d", area);
+      .attr("d", area)
+      .style("fill", function(x) { return x[0].c; });
 }
 
 function normalDist(mean, stdDeviation, n){
@@ -107,43 +108,51 @@ function getHarrisonsRack(n, nutsFirst){
 
 }
 function getWallnuts(SD,n){
+    var c = d3.scale.linear()
+	.range(["#aad", "#556"]);
     return Array(
- 	coverage(6.7,14.3,SD,n),
-	coverage(8.1,15.8,SD,n),
-	coverage(9.4,16.5,SD,n),
-	coverage(11.0,17.6,SD,n),
-	coverage(13.2,19.4,SD,n),
-	coverage(15.6,22.6,SD,n),
-	coverage(18.9,25.8,SD,n),
-	coverage(22.3,29.0,SD,n),
-	coverage(25.2,32.1,SD,n),
-	coverage(28.8,32.6,SD,n),
-	coverage(33.1,37.4,SD,n));
+ 	coverage(6.7,14.3,SD,n,c),
+	coverage(8.1,15.8,SD,n,c),
+	coverage(9.4,16.5,SD,n,c),
+	coverage(11.0,17.6,SD,n,c),
+	coverage(13.2,19.4,SD,n,c),
+	coverage(15.6,22.6,SD,n,c),
+	coverage(18.9,25.8,SD,n,c),
+	coverage(22.3,29.0,SD,n,c),
+	coverage(25.2,32.1,SD,n,c),
+	coverage(28.8,32.6,SD,n,c),
+	coverage(33.1,37.4,SD,n,c));
 
 }
 function getCamalotDoubles(SD,n){
+    var c = d3.scale.linear()
+	.range(["#111", "#a11"]);
     return Array(
-	coverage(13.0,23.4,SD,n),//0.3
-	coverage(13.0,23.4,SD,n),
-	coverage(15.5,26.7,SD,n),//0.4
-	coverage(15.5,26.7,SD,n),
-	coverage(19.6,33.5,SD,n),//0.5
-	coverage(19.6,33.5,SD,n),
-	coverage(23.9,41.2,SD,n),//0.75
-	coverage(23.9,41.2,SD,n),
-	coverage(30.2,52.1,SD,n),//1
-	coverage(30.2,52.1,SD,n),
-	coverage(37.2,64.9,SD,n),//2
-	coverage(37.2,64.9,SD,n),
-	coverage(50.7,87.9,SD,n),//3
-	coverage(50.7,87.9,SD,n));
+	coverage(13.0,23.4,SD,n,c),//0.3
+	coverage(13.0,23.4,SD,n,c),
+	coverage(15.5,26.7,SD,n,c),//0.4
+	coverage(15.5,26.7,SD,n,c),
+	coverage(19.6,33.5,SD,n,c),//0.5
+	coverage(19.6,33.5,SD,n,c),
+	coverage(23.9,41.2,SD,n,c),//0.75
+	coverage(23.9,41.2,SD,n,c),
+	coverage(30.2,52.1,SD,n,c),//1
+	coverage(30.2,52.1,SD,n,c),
+	coverage(37.2,64.9,SD,n,c),//2
+	coverage(37.2,64.9,SD,n,c),
+	coverage(50.7,87.9,SD,n,c),//3
+	coverage(50.7,87.9,SD,n,c));
 
 
 }
-function coverage(min,max,sd,n){
+function coverage(min,max,sd,n, colorScale){
+    if (colorScale == null){
+	colorScale = d3.scale.linear()
+	.range(["#111", "#aaa"]);
+    }
     var a = probabilityOfCoverage(min,max,sd,n);
     ans = a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}});
-    ans[0].c = Math.random();
+    ans[0].c = colorScale(Math.random());
   return ans;
 }
 function probabilityOfCoverage(camMin, camMax, crackSD, n){
