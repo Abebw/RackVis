@@ -50,6 +50,7 @@ svg.selectAll("path")
     .attr("d", area)
     .style("fill", function(x) { return x[0].c; });
 
+
 svg.append("text")
     .attr("text-anchor", "middle")
     .attr("x", width/2)
@@ -58,7 +59,7 @@ svg.append("text")
 
 function transition() {
   var animationLength = 2500;
-  var selection = d3.selectAll("path").data(function() {
+  var selection = svg.selectAll("path").data(function() {
         var d = layers1;
         layers1 = layers0;
         return layers0 = d;
@@ -70,12 +71,14 @@ function transition() {
     
     selection.enter().append("path")
       .attr("d", area)
+      .style("opacity",0)
       .style("fill", function(x) { return x[0].c; });
 
 
     selection.transition()
       .duration(animationLength)
       .attr("d", area)
+      .style("opacity",1)
       .style("fill", function(x) { return x[0].c; });
 }
 
