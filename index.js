@@ -10,9 +10,9 @@ var n = 20, // number of layers
     //stack = d3.layout.stack().offset("silhouette"),
 //layers0 = stack(getHarrisonsRack(m, true));
 //layers1 = stack(getHarrisonsRack(m, false));
+    layers0 = stack(getCamalots(2,m));
+    layers1 = stack(getFriends(2,m));
 
-    layers1 = stack(getCamalots(2,m));
-    layers0 = stack(getFriends(2,m));
 var width = 960,
     height = 500,
     scaleHeight = 50;
