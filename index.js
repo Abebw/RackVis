@@ -5,8 +5,8 @@
 //more robust math (including head width)
 var n = 20, // number of layers
     m = 100, // number of samples per layer
-    //stack = d3.layout.stack().offset("zero"),
-    stack = d3.layout.stack().offset("wiggle"),
+    stack = d3.layout.stack().offset("zero"),
+    //stack = d3.layout.stack().offset("wiggle"),
     //stack = d3.layout.stack().offset("silhouette"),
 //layers0 = stack(getHarrisonsRack(m, true));
 //layers1 = stack(getHarrisonsRack(m, false));
@@ -120,7 +120,7 @@ function getHarrisonsRack(n, nutsFirst){
 }
 function getFriends(SD,n){
     var c = "blue";
-    return Array(
+    return Array(coverage(100,100,100000,n),
  	coverage(14,22.54,SD,n,'blue'), //0
 	coverage(16.56,26.66,SD,n,'red'), //0.5
 	coverage(19.71,31.73,SD,n,'yellow'), //1
@@ -134,7 +134,7 @@ function getFriends(SD,n){
 
 }
 function getCamalots(SD,n){
-    return Array(
+    return Array(coverage(100,100,100000,n),
 	coverage(13.0,23.4,SD,n,'#00659e'),//0.3
 	coverage(15.5,26.7,SD,n,'#abaeb8'),//0.4
 	coverage(19.6,33.5,SD,n,'#6d2688'),//0.5
