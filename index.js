@@ -140,8 +140,7 @@ function getCamalotDoubles(SD,n){
 	coverage(30.2,52.1,SD,n,c),
 	coverage(37.2,64.9,SD,n,c),//2
 	coverage(37.2,64.9,SD,n,c),
-	coverage(50.7,87.9,SD,n,c),//3
-	coverage(50.7,87.9,SD,n,c));
+	coverage(50.7,87.9,SD,n,c));//3
 
 
 }
