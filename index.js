@@ -146,7 +146,7 @@ function coverage(min,max,sd,n, color){
 	color = '#666';
     }
     var a = probabilityOfCoverage(min,max,sd,n);
-    ans = a.map(function(d, i) { console.log({'i':i, 'd':d}); return {x: i/10, y: Math.max(0, d)}});
+    ans = a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}});
     ans[0].c = d3.rgb(color);
   return ans;
 }
