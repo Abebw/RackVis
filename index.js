@@ -11,8 +11,8 @@ var n = 20, // number of layers
 //layers0 = stack(getHarrisonsRack(m, true));
 //layers1 = stack(getHarrisonsRack(m, false));
 
-    layers0 = stack(getCamalots(1.5,m));
-    layers1 = stack(getFriends(2,m));
+    layers1 = stack(getCamalots(1.5,m));
+    layers0 = stack(getFriends(2,m));
 var width = 960,
     height = 500,
     scaleHeight = 50;
@@ -108,15 +108,15 @@ function getHarrisonsRack(n, nutsFirst){
 function getFriends(SD,n){
     var c = "blue";
     return Array(
- 	coverage(14,22.54,SD,n,c), //0
-	coverage(16.56,26.66,SD,n,c), //0.5
-	coverage(19.71,31.73,SD,n,c), //1
-	coverage(23.59,37.98,SD,n,c), //1.5
-	coverage(28.41,45.73,SD,n,c), //2
-	coverage(34.40,55.39,SD,n,c), //2.5
-	coverage(41.90,67.47,SD,n,c), //3
-	coverage(51.34,82.65,SD,n,c), //3.5
-	coverage(63.25,101.83,SD,n,c));//4
+ 	coverage(14,22.54,SD,n,'blue'), //0
+	coverage(16.56,26.66,SD,n,'red'), //0.5
+	coverage(19.71,31.73,SD,n,'yellow'), //1
+	coverage(23.59,37.98,SD,n,'silver'), //1.5
+	coverage(28.41,45.73,SD,n,'red'), //2
+	coverage(34.40,55.39,SD,n,'yellow'), //2.5
+	coverage(41.90,67.47,SD,n,'purple'), //3
+	coverage(51.34,82.65,SD,n,'blue'), //3.5
+	coverage(63.25,101.83,SD,n,'silver'));//4
     //there is also a 5 and 6 
 
 }
