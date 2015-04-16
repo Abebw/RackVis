@@ -11,7 +11,7 @@ var n = 20, // number of layers
 //layers0 = stack(getHarrisonsRack(m, true));
 //layers1 = stack(getHarrisonsRack(m, false));
 
-    layers1 = stack(getCamalots(1.5,m));
+    layers1 = stack(getCamalots(2,m));
     layers0 = stack(getFriends(2,m));
 var width = 960,
     height = 500,
@@ -57,14 +57,24 @@ svg.append("text")
     .text("Centimeters");
 
 function transition() {
-  d3.selectAll("path")
-      .data(function() {
+  var animationLength = 2500;
+  var selection = d3.selectAll("path").data(function() {
         var d = layers1;
         layers1 = layers0;
         return layers0 = d;
-      })
-    .transition()
-      .duration(2500)
+      });
+    selection.exit().transition()
+      .duration(animationLength)
+      .style("opacity",0)
+      .remove();
+    
+    selection.enter().append("path")
+      .attr("d", area)
+      .style("fill", function(x) { return x[0].c; });
+
+
+    selection.transition()
+      .duration(animationLength)
       .attr("d", area)
       .style("fill", function(x) { return x[0].c; });
 }
