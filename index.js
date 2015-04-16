@@ -8,13 +8,11 @@ var n = 20, // number of layers
     //stack = d3.layout.stack().offset("zero"),
     stack = d3.layout.stack().offset("wiggle"),
     //stack = d3.layout.stack().offset("silhouette"),
-    //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
-    //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
-    //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
-    //layers1 = stack(Array(probabilityOfCoverageTest(15, 30, m), probabilityOfCoverageTest(23, 50, m), probabilityOfCoverageTest(40, 80, m)));
-    layers0 = stack(getHarrisonsRack(m, true));
-    layers1 = stack(getHarrisonsRack(m, false));
+//layers0 = stack(getHarrisonsRack(m, true));
+//layers1 = stack(getHarrisonsRack(m, false));
 
+    layers0 = stack(getCamalots(1.5,m));
+    layers1 = stack(getCamalots(2,m));
 var width = 960,
     height = 500,
     scaleHeight = 50;
@@ -107,9 +105,7 @@ function getHarrisonsRack(n, nutsFirst){
     }
 
 }
-function getWallnuts(SD,n){
-    var c = d3.scale.linear()
-	.range(["#aad", "#556"]);
+function getFriends(SD,n){
     return Array(
  	coverage(6.7,14.3,SD,n,c),
 	coverage(8.1,15.8,SD,n,c),
@@ -124,35 +120,24 @@ function getWallnuts(SD,n){
 	coverage(33.1,37.4,SD,n,c));
 
 }
-function getCamalotDoubles(SD,n){
-    var c = d3.scale.linear()
-	.range(["#522", "#a33"]);
+function getCamalots(SD,n){
     return Array(
-	coverage(13.0,23.4,SD,n,c),//0.3
-	coverage(13.0,23.4,SD,n,c),
-	coverage(15.5,26.7,SD,n,c),//0.4
-	coverage(15.5,26.7,SD,n,c),
-	coverage(19.6,33.5,SD,n,c),//0.5
-	coverage(19.6,33.5,SD,n,c),
-	coverage(23.9,41.2,SD,n,c),//0.75
-	coverage(23.9,41.2,SD,n,c),
-	coverage(30.2,52.1,SD,n,c),//1
-	coverage(30.2,52.1,SD,n,c),
-	coverage(37.2,64.9,SD,n,c),//2
-	coverage(37.2,64.9,SD,n,c),
-	coverage(50.7,87.9,SD,n,c),//3
-	coverage(50.7,87.9,SD,n,c));
-
-
+	coverage(13.0,23.4,SD,n,'#00659e'),//0.3
+	coverage(15.5,26.7,SD,n,'#abaeb8'),//0.4
+	coverage(19.6,33.5,SD,n,'#6d2688'),//0.5
+	coverage(23.9,41.2,SD,n,'#456f6e'),//0.75
+	coverage(30.2,52.1,SD,n,'#c5331c'),//1
+	coverage(37.2,64.9,SD,n,'#eccb01'),//2
+	coverage(50.7,87.9,SD,n,'#00659e'));//3
+	//the rest of the sizes
 }
-function coverage(min,max,sd,n, colorScale){
-    if (colorScale == null){
-	colorScale = d3.scale.linear()
-	.range(["#111", "#aaa"]);
+function coverage(min,max,sd,n, color){
+    if (color == null) {
+	color = '#666';
     }
     var a = probabilityOfCoverage(min,max,sd,n);
-    ans = a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}});
-    ans[0].c = colorScale(Math.random());
+    ans = a.map(function(d, i) { console.log({'i':i, 'd':d}); return {x: i/10, y: Math.max(0, d)}});
+    ans[0].c = d3.rgb(color);
   return ans;
 }
 function probabilityOfCoverage(camMin, camMax, crackSD, n){
