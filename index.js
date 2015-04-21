@@ -4,7 +4,7 @@
 //thick boarder around the different "sets" of things.
 //more robust math (including head width)
 var n = 20, // number of layers
-    m = 100, // number of samples per layer
+    m = 150, // number of samples per layer
     stack = d3.layout.stack().offset("zero"),
     //stack = d3.layout.stack().offset("wiggle"),
     //stack = d3.layout.stack().offset("silhouette"),
@@ -18,7 +18,7 @@ var width = 960,
     scaleHeight = 50;
 
 var x = d3.scale.sqrt()
-    .domain([0.5, (m - 1)/10])
+    .domain([0.5, 9.5])
     .range([0, width]);
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -121,15 +121,15 @@ function getHarrisonsRack(n, nutsFirst){
 function getFriends(SD,n){
     var c = "blue";
     return Array(coverage(100,100,100000,n),
- 	coverage(14,22.54,SD,n,'blue'), //0
-	coverage(16.56,26.66,SD,n,'red'), //0.5
-	coverage(19.71,31.73,SD,n,'yellow'), //1
-	coverage(23.59,37.98,SD,n,'silver'), //1.5
-	coverage(28.41,45.73,SD,n,'red'), //2
-	coverage(34.40,55.39,SD,n,'yellow'), //2.5
-	coverage(41.90,67.47,SD,n,'purple'), //3
-	coverage(51.34,82.65,SD,n,'blue'), //3.5
-	coverage(63.25,101.83,SD,n,'silver'));//4
+ 	coverage(14,22.54,SD,n,'#00659e'), //0
+	coverage(16.56,26.66,SD,n,'#c5331c'), //0.5
+	coverage(19.71,31.73,SD,n,'#eccb01'), //1
+	coverage(23.59,37.98,SD,n,'#abaeb8'), //1.5
+	coverage(28.41,45.73,SD,n,'#c5331c'), //2
+	coverage(34.40,55.39,SD,n,'#eccb01'), //2.5
+	coverage(41.90,67.47,SD,n,'#6d2688'), //3
+	coverage(51.34,82.65,SD,n,'#00659e'), //3.5
+	coverage(63.25,101.83,SD,n,'#abaeb8'));//4
     //there is also a 5 and 6 
 
 }
