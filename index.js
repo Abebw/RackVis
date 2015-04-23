@@ -133,36 +133,36 @@ function getWallnuts(SD,n){
     var c = d3.scale.linear()
 	.range(["#aad", "#556"]);
     return Array(
- 	coverage(6.7,14.3,SD,n,c),
-	coverage(8.1,15.8,SD,n,c),
-	coverage(9.4,16.5,SD,n,c),
-	coverage(11.0,17.6,SD,n,c),
-	coverage(13.2,19.4,SD,n,c),
-	coverage(15.6,22.6,SD,n,c),
-	coverage(18.9,25.8,SD,n,c),
-	coverage(22.3,29.0,SD,n,c),
-	coverage(25.2,32.1,SD,n,c),
-	coverage(28.8,32.6,SD,n,c),
-	coverage(33.1,37.4,SD,n,c));
+ 	coverage(6.7,14.3,SD,n,c(Math.random())),
+	coverage(8.1,15.8,SD,n,c(Math.random())),
+	coverage(9.4,16.5,SD,n,c(Math.random())),
+	coverage(11.0,17.6,SD,n,c(Math.random())),
+	coverage(13.2,19.4,SD,n,c(Math.random())),
+	coverage(15.6,22.6,SD,n,c(Math.random())),
+	coverage(18.9,25.8,SD,n,c(Math.random())),
+	coverage(22.3,29.0,SD,n,c(Math.random())),
+	coverage(25.2,32.1,SD,n,c(Math.random())),
+	coverage(28.8,32.6,SD,n,c(Math.random())),
+	coverage(33.1,37.4,SD,n,c(Math.random())));
 
 }
 function getCamalotDoubles(SD,n){
     var c = d3.scale.linear()
 	.range(["#522", "#a33"]);
     return Array(
-	coverage(13.0,23.4,SD,n,c),//0.3
-	coverage(13.0,23.4,SD,n,c),
-	coverage(15.5,26.7,SD,n,c),//0.4
-	coverage(15.5,26.7,SD,n,c),
-	coverage(19.6,33.5,SD,n,c),//0.5
-	coverage(19.6,33.5,SD,n,c),
-	coverage(23.9,41.2,SD,n,c),//0.75
-	coverage(23.9,41.2,SD,n,c),
-	coverage(30.2,52.1,SD,n,c),//1
-	coverage(30.2,52.1,SD,n,c),
-	coverage(37.2,64.9,SD,n,c),//2
-	coverage(37.2,64.9,SD,n,c),
-	coverage(50.7,87.9,SD,n,c));//3
+	coverage(13.0,23.4,SD,n,c(Math.random())),//0.3
+	coverage(13.0,23.4,SD,n,c(Math.random())),
+	coverage(15.5,26.7,SD,n,c(Math.random())),//0.4
+	coverage(15.5,26.7,SD,n,c(Math.random())),
+	coverage(19.6,33.5,SD,n,c(Math.random())),//0.5
+	coverage(19.6,33.5,SD,n,c(Math.random())),
+	coverage(23.9,41.2,SD,n,c(Math.random())),//0.75
+	coverage(23.9,41.2,SD,n,c(Math.random())),
+	coverage(30.2,52.1,SD,n,c(Math.random())),//1
+	coverage(30.2,52.1,SD,n,c(Math.random())),
+	coverage(37.2,64.9,SD,n,c(Math.random())),//2
+	coverage(37.2,64.9,SD,n,c(Math.random())),
+	coverage(50.7,87.9,SD,n,c(Math.random())));//3
 
 
 }
