@@ -4,30 +4,45 @@
 //thick boarder around the different "sets" of things.
 //more robust math (including head width)
 var n = 20, // number of layers
-    m = 100, // number of samples per layer
-    //stack = d3.layout.stack().offset("zero"),
-    stack = d3.layout.stack().offset("wiggle"),
-    //stack = d3.layout.stack().offset("silhouette"),
-    //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); })),
-    //layers1 = stack(d3.range(n).map(function() { return bumpLayer(m); }));
-    //layers1 = stack(Array(normalDistTest(m/2, 15, m)));
-    //layers1 = stack(Array(probabilityOfCoverageTest(15, 30, m), probabilityOfCoverageTest(23, 50, m), probabilityOfCoverageTest(40, 80, m)));
-    layers0 = stack(getHarrisonsRack(m, true));
-    layers1 = stack(getHarrisonsRack(m, false));
+    m = 150, // number of samples per layer
+    zStack = d3.layout.stack().offset("zero"),
+    wStack = d3.layout.stack().offset("wiggle"),
+    data = {
+	camalots: null,
+	friends : null,
+	harrisonA : null,
+	harrisonB : null
+    },
+    lastData="harrisonA";
+
+function stackToWiggle(){
+    data.camalots = wStack(getCamalots(2,m));
+    data.friends = wStack(getFriends(2,m));
+    data.harrisonA = wStack(getHarrisonsRack(m, true));
+    data.harrisonB = wStack(getHarrisonsRack(m, false));
+}
+function stackToZero(){
+    data.camalots = zStack(getCamalots(2,m));
+    data.friends = zStack(getFriends(2,m));
+    data.harrisonA = zStack(getHarrisonsRack(m, true));
+    data.harrisonB = zStack(getHarrisonsRack(m, false));
+}
+stackToWiggle();
+
 
 var width = 960,
     height = 500,
     scaleHeight = 50;
 
 var x = d3.scale.sqrt()
-    .domain([0.5, (m - 1)/10])
+    .domain([0.5, 9.5])
     .range([0, width]);
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient('bottom');
 
 var y = d3.scale.linear()
-    .domain([0, d3.max(layers0.concat(layers1), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
+    .domain([0, d3.max(data.camalots.concat(data.friends,data.harrisonA,data.harrisonB), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
     .range([height-scaleHeight, 0]);
 
 var color = d3.scale.linear()
@@ -47,27 +62,39 @@ svg.append("g")
     .call(xAxis);
 
 svg.selectAll("path")
-    .data(layers0)
+    .data(data[lastData])
   .enter().append("path")
     .attr("d", area)
     .style("fill", function(x) { return x[0].c; });
+
 
 svg.append("text")
     .attr("text-anchor", "middle")
     .attr("x", width/2)
     .attr("y", height - 5)
     .text("Centimeters");
-
-function transition() {
-  d3.selectAll("path")
-      .data(function() {
-        var d = layers1;
-        layers1 = layers0;
-        return layers0 = d;
-      })
-    .transition()
-      .duration(2500)
+function transition(){return transition(null);}
+function transition(dataKey) {
+  if (data[dataKey] != null){
+      lastData = dataKey;
+  }
+  var animationLength = 2500;
+  var selection = svg.selectAll("path").data(data[lastData]);
+    selection.exit().transition()
+      .duration(animationLength)
+      .style("opacity",0)
+      .remove();
+    
+    selection.enter().append("path")
       .attr("d", area)
+      .style("opacity",0)
+      .style("fill", function(x) { return x[0].c; });
+
+
+    selection.transition()
+      .duration(animationLength)
+      .attr("d", area)
+      .style("opacity",1)
       .style("fill", function(x) { return x[0].c; });
 }
 
@@ -107,51 +134,76 @@ function getHarrisonsRack(n, nutsFirst){
     }
 
 }
+
 function getWallnuts(SD,n){
     var c = d3.scale.linear()
 	.range(["#aad", "#556"]);
     return Array(
- 	coverage(6.7,14.3,SD,n,c),
-	coverage(8.1,15.8,SD,n,c),
-	coverage(9.4,16.5,SD,n,c),
-	coverage(11.0,17.6,SD,n,c),
-	coverage(13.2,19.4,SD,n,c),
-	coverage(15.6,22.6,SD,n,c),
-	coverage(18.9,25.8,SD,n,c),
-	coverage(22.3,29.0,SD,n,c),
-	coverage(25.2,32.1,SD,n,c),
-	coverage(28.8,32.6,SD,n,c),
-	coverage(33.1,37.4,SD,n,c));
+ 	coverage(6.7,14.3,SD,n,c(Math.random())),
+	coverage(8.1,15.8,SD,n,c(Math.random())),
+	coverage(9.4,16.5,SD,n,c(Math.random())),
+	coverage(11.0,17.6,SD,n,c(Math.random())),
+	coverage(13.2,19.4,SD,n,c(Math.random())),
+	coverage(15.6,22.6,SD,n,c(Math.random())),
+	coverage(18.9,25.8,SD,n,c(Math.random())),
+	coverage(22.3,29.0,SD,n,c(Math.random())),
+	coverage(25.2,32.1,SD,n,c(Math.random())),
+	coverage(28.8,32.6,SD,n,c(Math.random())),
+	coverage(33.1,37.4,SD,n,c(Math.random())));
 
 }
 function getCamalotDoubles(SD,n){
     var c = d3.scale.linear()
 	.range(["#522", "#a33"]);
     return Array(
-	coverage(13.0,23.4,SD,n,c),//0.3
-	coverage(13.0,23.4,SD,n,c),
-	coverage(15.5,26.7,SD,n,c),//0.4
-	coverage(15.5,26.7,SD,n,c),
-	coverage(19.6,33.5,SD,n,c),//0.5
-	coverage(19.6,33.5,SD,n,c),
-	coverage(23.9,41.2,SD,n,c),//0.75
-	coverage(23.9,41.2,SD,n,c),
-	coverage(30.2,52.1,SD,n,c),//1
-	coverage(30.2,52.1,SD,n,c),
-	coverage(37.2,64.9,SD,n,c),//2
-	coverage(37.2,64.9,SD,n,c),
-	coverage(50.7,87.9,SD,n,c));//3
-
+	coverage(13.0,23.4,SD,n,c(Math.random())),//0.3
+	coverage(13.0,23.4,SD,n,c(Math.random())),
+	coverage(15.5,26.7,SD,n,c(Math.random())),//0.4
+	coverage(15.5,26.7,SD,n,c(Math.random())),
+	coverage(19.6,33.5,SD,n,c(Math.random())),//0.5
+	coverage(19.6,33.5,SD,n,c(Math.random())),
+	coverage(23.9,41.2,SD,n,c(Math.random())),//0.75
+	coverage(23.9,41.2,SD,n,c(Math.random())),
+	coverage(30.2,52.1,SD,n,c(Math.random())),//1
+	coverage(30.2,52.1,SD,n,c(Math.random())),
+	coverage(37.2,64.9,SD,n,c(Math.random())),//2
+	coverage(37.2,64.9,SD,n,c(Math.random())),
+	coverage(50.7,87.9,SD,n,c(Math.random())));//3
 
 }
-function coverage(min,max,sd,n, colorScale){
-    if (colorScale == null){
-	colorScale = d3.scale.linear()
-	.range(["#111", "#aaa"]);
+function getFriends(SD,n){
+    var c = "blue";
+    return Array(coverage(100,100,100000,n),
+ 	coverage(14,22.54,SD,n,'#00659e'), //0
+	coverage(16.56,26.66,SD,n,'#c5331c'), //0.5
+	coverage(19.71,31.73,SD,n,'#eccb01'), //1
+	coverage(23.59,37.98,SD,n,'#abaeb8'), //1.5
+	coverage(28.41,45.73,SD,n,'#c5331c'), //2
+	coverage(34.40,55.39,SD,n,'#eccb01'), //2.5
+	coverage(41.90,67.47,SD,n,'#6d2688'), //3
+	coverage(51.34,82.65,SD,n,'#00659e'), //3.5
+	coverage(63.25,101.83,SD,n,'#abaeb8'));//4
+    //there is also a 5 and 6 
+
+}
+function getCamalots(SD,n){
+    return Array(coverage(100,100,100000,n),
+	coverage(13.0,23.4,SD,n,'#00659e'),//0.3
+	coverage(15.5,26.7,SD,n,'#abaeb8'),//0.4
+	coverage(19.6,33.5,SD,n,'#6d2688'),//0.5
+	coverage(23.9,41.2,SD,n,'#456f6e'),//0.75
+	coverage(30.2,52.1,SD,n,'#c5331c'),//1
+	coverage(37.2,64.9,SD,n,'#eccb01'),//2
+	coverage(50.7,87.9,SD,n,'#00659e'));//3
+	//there is also 4-6
+}
+function coverage(min,max,sd,n, color){
+    if (color == null) {
+	color = '#666';
     }
     var a = probabilityOfCoverage(min,max,sd,n);
     ans = a.map(function(d, i) { return {x: i/10, y: Math.max(0, d)}});
-    ans[0].c = colorScale(Math.random());
+    ans[0].c = d3.rgb(color);
   return ans;
 }
 function probabilityOfCoverage(camMin, camMax, crackSD, n){
@@ -161,22 +213,4 @@ function probabilityOfCoverage(camMin, camMax, crackSD, n){
     lowerHalf = normalDistCdr(camMin, crackSD, halfWayIndex );
     upperHalf = normalDistCdr(n - camMax, crackSD, n - halfWayIndex);
     return lowerHalf.concat(upperHalf.reverse());
-}
-// Inspired by Lee Byron's test data generator.
-function bumpLayer(n) {
-
-  function bump(a) {
-    var x = 1 / (.1 + Math.random()),
-        y = 2 * Math.random() - .5,
-        z = 10 / (.1 + Math.random());
-    for (var i = 0; i < n; i++) {
-      var w = (i / n - y) * z;
-      a[i] += x * Math.exp(-w * w);
-    }
-  }
-
-  var a = [], i;
-  for (i = 0; i < n; ++i) a[i] = 0;
-  for (i = 0; i < 5; ++i) bump(a);
-  return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
 }

@@ -11,17 +11,19 @@ body {
   width: 960px;
 }
 
-button {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
 
 </style>
 </head>
 <body>
-<button onclick="transition()">Update</button>
 <svg></svg>
+<button onclick="stackToWiggle();transition();">Wiggle</button>
+<button onclick="stackToZero();transition();">Zero</button>
+<br/>
+<button onclick="transition('camalots')">Black Diamond C4s</button>
+<button onclick="transition('friends')">WildCountry Friends</button>
+<button onclick="transition('harrisonA')">Harrisons Rack A</button>
+<button onclick="transition('harrisonB')">Harrisons Rack B</button>
+
 <br>
 passive pro is blue active pro is red 
 <br>
