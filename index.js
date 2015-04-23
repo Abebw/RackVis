@@ -5,13 +5,13 @@
 //more robust math (including head width)
 var n = 20, // number of layers
     m = 150, // number of samples per layer
-    stack = d3.layout.stack().offset("zero"),
-    //stack = d3.layout.stack().offset("wiggle"),
+    zStack = d3.layout.stack().offset("zero"),
+    wStack = d3.layout.stack().offset("wiggle"),
     //stack = d3.layout.stack().offset("silhouette"),
 //layers0 = stack(getHarrisonsRack(m, true));
 //layers1 = stack(getHarrisonsRack(m, false));
-    layers0 = stack(getCamalots(2,m));
-    layers1 = stack(getFriends(2,m));
+    layers0 = zStack(getCamalots(2,m));
+    layers1 = wStack(getFriends(2,m));
 
 var width = 960,
     height = 500,
