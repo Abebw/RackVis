@@ -7,11 +7,25 @@ var n = 20, // number of layers
     m = 150, // number of samples per layer
     zStack = d3.layout.stack().offset("zero"),
     wStack = d3.layout.stack().offset("wiggle"),
-    //stack = d3.layout.stack().offset("silhouette"),
-//layers0 = stack(getHarrisonsRack(m, true));
-//layers1 = stack(getHarrisonsRack(m, false));
-    layers0 = zStack(getCamalots(2,m));
-    layers1 = wStack(getFriends(2,m));
+    camalots = null,
+    friends = null,
+    harrisonA = null,
+    harrisonB = null;
+
+function stackToWiggle(){
+    camalots = wStack(getCamalots(2,m));
+    friends = wStack(getFriends(2,m));
+    harrisonA = wStack(getHarrisonsRack(m, true));
+    harrisonB = wStack(getHarrisonsRack(m, false));
+}
+function stackToZero(){
+    camalots = zStack(getCamalots(2,m));
+    friends = zStack(getFriends(2,m));
+    harrisonA = zStack(getHarrisonsRack(m, true));
+    harrisonB = zStack(getHarrisonsRack(m, false));
+}
+stackToWiggle();
+
 
 var width = 960,
     height = 500,
@@ -57,13 +71,9 @@ svg.append("text")
     .attr("y", height - 5)
     .text("Centimeters");
 
-function transition() {
+function transition(var data) {
   var animationLength = 2500;
-  var selection = svg.selectAll("path").data(function() {
-        var d = layers1;
-        layers1 = layers0;
-        return layers0 = d;
-      });
+  var selection = svg.selectAll("path").data(data);
     selection.exit().transition()
       .duration(animationLength)
       .style("opacity",0)
