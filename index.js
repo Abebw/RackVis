@@ -3,19 +3,15 @@
 //add peanuts
 //thick boarder around the different "sets" of things.
 //more robust math (including head width)
-
 var n = 20, // number of layers
     m = 150, // number of samples per layer
-    stackZero = d3.layout.stack().offset("zero"),
-    stackWiggle = d3.layout.stack().offset("wiggle"),
-    harrisonsW1 = stackWiggle(getHarrisonsRack(m, false)),
-    harrisonsW2 = stackWiggle(getHarrisonsRack(m, true)),
-    camalotW = stackWiggle(getCamalots(2,m)),
-    friendsW = stackWiggle(getFriends(2,m)),
-    harrisonsZ1 = stackZero(getHarrisonsRack(m, false)),
-    harrisonsZ2 = stackZero(getHarrisonsRack(m, true)),
-    camalotZ = stackZero(getCamalots(2,m)),
-    friendsZ = stackZero(getFriends(2,m)),
+    stack = d3.layout.stack().offset("zero"),
+    //stack = d3.layout.stack().offset("wiggle"),
+    //stack = d3.layout.stack().offset("silhouette"),
+//layers0 = stack(getHarrisonsRack(m, true));
+//layers1 = stack(getHarrisonsRack(m, false));
+    layers0 = stack(getCamalots(2,m));
+    layers1 = stack(getFriends(2,m));
 
 var width = 960,
     height = 500,
@@ -25,7 +21,7 @@ var x = d3.scale.sqrt()
     .domain([0.5, 9.5])
     .range([0, width]);
 var xAxis = d3.svg.axis()
-    .scale(x)t
+    .scale(x)
     .orient('bottom');
 
 var y = d3.scale.linear()
@@ -86,8 +82,6 @@ function transition() {
       .style("fill", function(x) { return x[0].c; });
 }
 
-
-
 function normalDist(mean, stdDeviation, n){
   var ans = [], i;
   for (i = 0; i < n; ++i){
@@ -134,8 +128,8 @@ function getFriends(SD,n){
 	coverage(28.41,45.73,SD,n,'#c5331c'), //2
 	coverage(34.40,55.39,SD,n,'#eccb01'), //2.5
 	coverage(41.90,67.47,SD,n,'#6d2688'), //3
-	coverage(51.34,82.65,SD,n,'#00659e'));//, //3.5
-	//coverage(63.25,101.83,SD,n,'#abaeb8'));//4
+	coverage(51.34,82.65,SD,n,'#00659e'), //3.5
+	coverage(63.25,101.83,SD,n,'#abaeb8'));//4
     //there is also a 5 and 6 
 
 }
