@@ -7,22 +7,25 @@ var n = 20, // number of layers
     m = 150, // number of samples per layer
     zStack = d3.layout.stack().offset("zero"),
     wStack = d3.layout.stack().offset("wiggle"),
-    camalots = null,
-    friends = null,
-    harrisonA = null,
-    harrisonB = null;
+    data = {
+	camalots: null,
+	friends : null,
+	harrisonA : null,
+	harrisonB : null
+    },
+    lastData="harrisonA";
 
 function stackToWiggle(){
-    camalots = wStack(getCamalots(2,m));
-    friends = wStack(getFriends(2,m));
-    harrisonA = wStack(getHarrisonsRack(m, true));
-    harrisonB = wStack(getHarrisonsRack(m, false));
+    data.camalots = wStack(getCamalots(2,m));
+    data.friends = wStack(getFriends(2,m));
+    data.harrisonA = wStack(getHarrisonsRack(m, true));
+    data.harrisonB = wStack(getHarrisonsRack(m, false));
 }
 function stackToZero(){
-    camalots = zStack(getCamalots(2,m));
-    friends = zStack(getFriends(2,m));
-    harrisonA = zStack(getHarrisonsRack(m, true));
-    harrisonB = zStack(getHarrisonsRack(m, false));
+    data.camalots = zStack(getCamalots(2,m));
+    data.friends = zStack(getFriends(2,m));
+    data.harrisonA = zStack(getHarrisonsRack(m, true));
+    data.harrisonB = zStack(getHarrisonsRack(m, false));
 }
 stackToWiggle();
 
@@ -39,7 +42,7 @@ var xAxis = d3.svg.axis()
     .orient('bottom');
 
 var y = d3.scale.linear()
-    .domain([0, d3.max(layers0.concat(layers1), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
+    .domain([0, d3.max(data.camalots.concat(data.friends,data.harrisonA,data.harrisonB), function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); })])
     .range([height-scaleHeight, 0]);
 
 var color = d3.scale.linear()
@@ -59,7 +62,7 @@ svg.append("g")
     .call(xAxis);
 
 svg.selectAll("path")
-    .data(layers0)
+    .data(data[lastData])
   .enter().append("path")
     .attr("d", area)
     .style("fill", function(x) { return x[0].c; });
@@ -70,10 +73,13 @@ svg.append("text")
     .attr("x", width/2)
     .attr("y", height - 5)
     .text("Centimeters");
-
-function transition(var data) {
+function transition(){return transition(null);}
+function transition(dataKey) {
+  if (data[dataKey] != null){
+      lastData = dataKey;
+  }
   var animationLength = 2500;
-  var selection = svg.selectAll("path").data(data);
+  var selection = svg.selectAll("path").data(data[lastData]);
     selection.exit().transition()
       .duration(animationLength)
       .style("opacity",0)
